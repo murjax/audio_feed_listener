@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "bootsnap", require: false
+gem "dotenv-rails"
 gem "importmap-rails"
 gem "jbuilder"
 gem "pg", "~> 1.1"
