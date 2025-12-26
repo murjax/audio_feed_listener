@@ -8,3 +8,8 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+#leaflet-map {
+  height: 800px;
+  width: 1200px;
+}
