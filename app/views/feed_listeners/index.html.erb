@@ -1,5 +1,6 @@
 <div>
   <% @audio_feeds.each do |audio_feed| %>
     <p><%= audio_feed.name %></p>
+    <audio controls src="https://broadcastify.cdnstream1.com/<%= audio_feed.remote_id %>"></audio>
   <% end %>
 </div>
