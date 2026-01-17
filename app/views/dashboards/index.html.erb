@@ -28,7 +28,31 @@
       </button>
     </div>
 
-    <div data-dashboards-index-target="listView">
+    <div
+      class="max-h-2/3 overflow-scroll"
+      data-dashboards-index-target="listView"
+    >
+      <div class="relative">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="absolute left-3 top-[1rem] text-gray-400 w-[1.5rem]"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+          />
+        </svg>
+        <input
+          placeholder="Search by name"
+          class="w-full mt-2 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          data-action="keydown->dashboards-index#searchFeeds"
+        />
+      </div>
       <% @audio_feeds.each do |audio_feed| %>
         <div class="min-w-md mt-2">
           <div
@@ -89,12 +113,108 @@
       <div
         id="leaflet-map"
         data-dashboards-index-target="map"
-        class="w-full min-h-150"
+        class="mt-2 w-full min-h-150"
       >
       </div>
     </div>
     <div class="hidden" data-dashboards-index-target="presetView">
-      <p>Presets</p>
+      <div
+        class="hidden flex flex-row mt-2"
+        data-dashboards-index-target="savePresetButton"
+      >
+        <button
+          class="mx-2 py-2 px-4 w-full rounded-lg font-medium cursor-pointer bg-blue-500 hover:bg-blue-400 text-white"
+          data-action="click->dashboards-index#savePreset"
+        >
+          Save Preset
+        </button>
+      </div>
+
+      <div id="preset-template" class="hidden min-w-md mt-2">
+        <div
+          class="border border-gray-300 rounded-md p-2 preset-item"
+        >
+          <div class="flex flex-row justify-between">
+            <div
+              class="font-bold cursor-pointer w-full preset-name"
+              data-action="click->dashboards-index#applyPreset"
+            >
+            </div>
+            <div class="flex flex-row justify-end">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="text-gray-400 w-[1.5rem] cursor-pointer"
+                data-action="click->dashboards-index#applyPreset"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="text-gray-400 w-[1.5rem] cursor-pointer"
+                data-action="click->dashboards-index#deletePreset"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </div>
+          </div>
+          <div class="text-xs preset-feed-count">
+          </div>
+        </div>
+      </div>
+
+      <% @presets.each do |preset| %>
+        <div class="min-w-md mt-2">
+          <div
+            class="border border-gray-300 rounded-md p-2 preset-item"
+            data-id="<%= preset.id %>"
+            data-audio-feed-ids="<%= preset.audio_feeds.pluck(:id).join(",") %>"
+          >
+            <div class="flex flex-row justify-between">
+              <div 
+                class="font-bold cursor-pointer w-full preset-name"
+                data-action="click->dashboards-index#applyPreset"
+              >
+                <%= preset.name %>
+              </div>
+              <div class="flex flex-row justify-end">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="text-gray-400 w-[1.5rem] cursor-pointer"
+                  data-action="click->dashboards-index#applyPreset"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="text-gray-400 w-[1.5rem] cursor-pointer"
+                  data-action="click->dashboards-index#deletePreset"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </div>
+            </div>
+            <div class="text-xs preset-feed-count">
+              <%= preset.audio_feeds.length %> feeds
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="ml-2 w-full h-screen bg-gray-100">

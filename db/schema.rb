@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_10_152240) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_17_154954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "audio_feed_presets", force: :cascade do |t|
+    t.bigint "audio_feed_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "preset_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["audio_feed_id"], name: "index_audio_feed_presets_on_audio_feed_id"
+    t.index ["preset_id"], name: "index_audio_feed_presets_on_preset_id"
+  end
 
   create_table "audio_feeds", force: :cascade do |t|
     t.string "city"
@@ -24,4 +33,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_10_152240) do
     t.string "state"
     t.datetime "updated_at", null: false
   end
+
+  create_table "presets", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "audio_feed_presets", "audio_feeds"
+  add_foreign_key "audio_feed_presets", "presets"
 end
