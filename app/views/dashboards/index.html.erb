@@ -70,37 +70,10 @@
               <div class="font-bold">
                 <%= audio_feed.name %>
               </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="text-gray-400 w-[1.5rem]"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
+              <%= render partial: "layouts/plus_svg", locals: { classes: "w-[1.5rem]" } %>
             </div>
             <div class="flex flex-row">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="text-gray-400 w-[1rem]"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-                />
-              </svg>
+              <%= render partial: "layouts/map_pin_svg", locals: { classes: "w-[1rem]" } %>
               <div class="text-xs ml-1">
                 <%= "#{audio_feed.city}, #{audio_feed.state}" %>
               </div>
@@ -141,28 +114,12 @@
             >
             </div>
             <div class="flex flex-row justify-end">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="text-gray-400 w-[1.5rem] cursor-pointer"
-                data-action="click->dashboards-index#applyPreset"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="text-gray-400 w-[1.5rem] cursor-pointer"
-                data-action="click->dashboards-index#deletePreset"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-              </svg>
+              <%= render partial: "layouts/plus_svg",
+                locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#applyPreset" }
+              %>
+              <%= render partial: "layouts/x_svg",
+                locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#deletePreset" }
+              %>
             </div>
           </div>
           <div class="text-xs preset-feed-count">
@@ -185,28 +142,12 @@
                 <%= preset.name %>
               </div>
               <div class="flex flex-row justify-end">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="text-gray-400 w-[1.5rem] cursor-pointer"
-                  data-action="click->dashboards-index#applyPreset"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="text-gray-400 w-[1.5rem] cursor-pointer"
-                  data-action="click->dashboards-index#deletePreset"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
+                <%= render partial: "layouts/plus_svg",
+                  locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#applyPreset" }
+                %>
+                <%= render partial: "layouts/x_svg",
+                  locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#deletePreset" }
+                %>
               </div>
             </div>
             <div class="text-xs preset-feed-count">
@@ -227,42 +168,15 @@
       >
         <div class="flex flex-row justify-between">
           <div class="font-bold selected-feed-name">
-            St. Augustine Airport
           </div>
 
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="cursor-pointer text-gray-400 w-[1.5rem] selected-feed-remove"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
+          <%= render partial: "layouts/x_svg",
+            locals: { classes: "w-[1.5rem] cursor-pointer selected-feed-remove" }
+          %>
         </div>
         <div class="flex flex-row">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="text-gray-400 w-[1rem]"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-            />
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-            />
-          </svg>
+          <%= render partial: "layouts/map_pin_svg", locals: { classes: "w-[1rem]" } %>
           <div class="text-xs ml-1 selected-feed-location">
-            St. Augustine, FL
           </div>
         </div>
         <audio class="mt-2 selected-feed-player" controls></audio>

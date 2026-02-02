@@ -13,40 +13,18 @@ export default class extends Controller {
   ];
 
   selectedFeeds = [];
-  browseView = "list";
+  csrfToken = "";
+
+  connect() {
+    this.csrfToken = document.getElementsByName('csrf-token')[0].content;
+  }
 
   showListView() {
-    this.browseView = "list";
-
-    this.listViewButtonTarget.classList.remove(...["bg-gray-100", "text-gray-700"]);
-    this.listViewButtonTarget.classList.add(...["bg-blue-500", "text-white"]);
-
-    this.mapViewButtonTarget.classList.remove(...["bg-blue-500", "text-white"]);
-    this.mapViewButtonTarget.classList.add(...["bg-gray-100", "text-gray-700"]);
-
-    this.presetViewButtonTarget.classList.remove(...["bg-blue-500", "text-white"]);
-    this.presetViewButtonTarget.classList.add(...["bg-gray-100", "text-gray-700"]);
-
-    this.mapViewTarget.classList.add("hidden");
-    this.presetViewTarget.classList.add("hidden");
-    this.listViewTarget.classList.remove("hidden");
+    this.toggleView({ button: this.listViewButtonTarget, view: this.listViewTarget });
   }
 
   showMapView() {
-    this.browseView = "map";
-
-    this.mapViewButtonTarget.classList.remove(...["bg-gray-100", "text-gray-700"]);
-    this.mapViewButtonTarget.classList.add(...["bg-blue-500", "text-white"]);
-
-    this.listViewButtonTarget.classList.remove(...["bg-blue-500", "text-white"]);
-    this.listViewButtonTarget.classList.add(...["bg-gray-100", "text-gray-700"]);
-
-    this.presetViewButtonTarget.classList.remove(...["bg-blue-500", "text-white"]);
-    this.presetViewButtonTarget.classList.add(...["bg-gray-100", "text-gray-700"]);
-
-    this.listViewTarget.classList.add("hidden");
-    this.presetViewTarget.classList.add("hidden");
-    this.mapViewTarget.classList.remove("hidden");
+    this.toggleView({ button: this.mapViewButtonTarget, view: this.mapViewTarget });
 
     if (!this.mapTarget.querySelector(".leaflet-map-pane")) {
       const leafletMap = L.map(this.mapTarget.id).setView([39.8195318, -98.6316774], 4);
@@ -82,20 +60,22 @@ export default class extends Controller {
   }
 
   showPresetView() {
-    this.browseView = "preset";
+    this.toggleView({ button: this.presetViewButtonTarget, view: this.presetViewTarget });
+  }
 
-    this.presetViewButtonTarget.classList.remove(...["bg-gray-100", "text-gray-700"]);
-    this.presetViewButtonTarget.classList.add(...["bg-blue-500", "text-white"]);
+  toggleView(viewElements) {
+    const viewButtons = [this.presetViewButtonTarget, this.listViewButtonTarget, this.mapViewButtonTarget];
+    const views = [this.presetViewTarget, this.listViewTarget, this.mapViewTarget];
 
-    this.listViewButtonTarget.classList.remove(...["bg-blue-500", "text-white"]);
-    this.listViewButtonTarget.classList.add(...["bg-gray-100", "text-gray-700"]);
+    viewButtons.forEach((viewButton) => {
+      viewButton.classList.remove(...["bg-blue-500", "text-white"]);
+      viewButton.classList.add(...["bg-gray-100", "text-gray-700"]);
+    });
+    views.forEach((view) => view.classList.add("hidden"));
 
-    this.mapViewButtonTarget.classList.remove(...["bg-blue-500", "text-white"]);
-    this.mapViewButtonTarget.classList.add(...["bg-gray-100", "text-gray-700"]);
-
-    this.mapViewTarget.classList.add("hidden");
-    this.listViewTarget.classList.add("hidden");
-    this.presetViewTarget.classList.remove("hidden");
+    viewElements.button.classList.remove(...["bg-gray-100", "text-gray-700"]);
+    viewElements.button.classList.add(...["bg-blue-500", "text-white"]);
+    viewElements.view.classList.remove("hidden");
   }
 
   async savePreset() {
@@ -108,13 +88,11 @@ export default class extends Controller {
     });
 
     try {
-      const token = document.getElementsByName('csrf-token')[0].content;
-
       const response = await fetch("/presets.json", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": token
+          "X-CSRF-Token": this.csrfToken
         },
         body: payload
       });
@@ -156,14 +134,13 @@ export default class extends Controller {
   async deletePreset(event) {
     const presetElement = event.currentTarget.closest(".preset-item");
     const id = presetElement.getAttribute("data-id");
-    const token = document.getElementsByName('csrf-token')[0].content;
 
     try {
       const response = await fetch(`/presets/${id}.json`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": token
+          "X-CSRF-Token": this.csrfToken
         },
       });
       if (response.status === 204) {
@@ -232,14 +209,7 @@ export default class extends Controller {
     const longitude = feedElement.getAttribute("data-longitude");
     const remoteId = feedElement.getAttribute("data-remote-id");
 
-    return {
-      id,
-      name,
-      location,
-      latitude,
-      longitude,
-      remoteId
-    };
+    return { id, name, location, latitude, longitude, remoteId };
   }
 
   showSavePresetButton() {
