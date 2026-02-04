@@ -3,12 +3,16 @@ class PresetsController < ApplicationController
     respond_to do |format|
       format.json do
         Preset.transaction do
-          preset = Preset.create!(name: permitted_params[:name])
-          permitted_params[:audio_feed_ids].each do |audio_feed_id|
-            AudioFeedPreset.create!(preset_id: preset.id, audio_feed_id: audio_feed_id)
-          end
+          preset = Preset.new(name: permitted_params[:name])
 
-          render json: {preset: {id: preset.id, name: preset.name}}
+          if preset.save
+            permitted_params.dig(:audio_feed_ids)&.each do |audio_feed_id|
+              AudioFeedPreset.create!(preset_id: preset.id, audio_feed_id: audio_feed_id)
+            end
+            render json: {preset: {id: preset.id, name: preset.name}}, status: :created
+          else
+            render json: {errors: preset.errors.full_messages.join(", ")}, status: :unprocessable_entity
+          end
         end
       end
     end
