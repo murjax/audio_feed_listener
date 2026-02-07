@@ -1,5 +1,6 @@
 <div 
   data-controller="dashboards-index"
+  data-audio-host-url="<%= Rails.application.config.audio_host_url %>"
   class="flex flex-row"
 >
   <div class="w-1/3">
@@ -9,6 +10,7 @@
         class="mx-2 py-2 px-4 w-full rounded-lg font-medium cursor-pointer bg-blue-500 text-white"
         data-dashboards-index-target="listViewButton"
         data-action="click->dashboards-index#showListView"
+        data-test-id="list-view-button"
       >
         List View
       </button>
@@ -16,6 +18,7 @@
         class="mx-2 py-2 px-4 w-full rounded-lg font-medium cursor-pointer bg-gray-100 text-gray-700"
         data-dashboards-index-target="mapViewButton"
         data-action="click->dashboards-index#showMapView"
+        data-test-id="map-view-button"
       >
         Map View
       </button>
@@ -23,6 +26,7 @@
         class="mx-2 py-2 px-4 w-full rounded-lg font-medium cursor-pointer bg-gray-100 text-gray-700"
         data-dashboards-index-target="presetViewButton"
         data-action="click->dashboards-index#showPresetView"
+        data-test-id="preset-view-button"
       >
         Presets
       </button>
@@ -31,6 +35,7 @@
     <div
       class="max-h-2/3 overflow-scroll"
       data-dashboards-index-target="listView"
+      data-test-id="audio-feed-list"
     >
       <div class="relative">
         <svg
@@ -51,6 +56,7 @@
           placeholder="Search by name"
           class="w-full mt-2 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           data-action="keydown->dashboards-index#searchFeeds"
+          data-test-id="audio-feed-search"
         />
       </div>
       <% @audio_feeds.each do |audio_feed| %>
@@ -82,7 +88,11 @@
         </div>
       <% end %>
     </div>
-    <div class="hidden" data-dashboards-index-target="mapView">
+    <div
+      class="hidden"
+      data-dashboards-index-target="mapView"
+      data-test-id="map-view"
+    >
       <div
         id="leaflet-map"
         data-dashboards-index-target="map"
@@ -90,7 +100,11 @@
       >
       </div>
     </div>
-    <div class="hidden" data-dashboards-index-target="presetView">
+    <div
+      class="hidden"
+      data-dashboards-index-target="presetView"
+      data-test-id="preset-view"
+    >
       <div
         class="hidden flex flex-row mt-2"
         data-dashboards-index-target="savePresetButton"
@@ -98,6 +112,7 @@
         <button
           class="mx-2 py-2 px-4 w-full rounded-lg font-medium cursor-pointer bg-blue-500 hover:bg-blue-400 text-white"
           data-action="click->dashboards-index#savePreset"
+          data-test-id="save-preset-button"
         >
           Save Preset
         </button>
@@ -118,7 +133,7 @@
                 locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#applyPreset" }
               %>
               <%= render partial: "layouts/x_svg",
-                locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#deletePreset" }
+                locals: { classes: "w-[1.5rem] cursor-pointer preset-delete", data_action: "click->dashboards-index#deletePreset" }
               %>
             </div>
           </div>
@@ -146,7 +161,7 @@
                   locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#applyPreset" }
                 %>
                 <%= render partial: "layouts/x_svg",
-                  locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#deletePreset" }
+                  locals: { classes: "w-[1.5rem] cursor-pointer preset-delete", data_action: "click->dashboards-index#deletePreset" }
                 %>
               </div>
             </div>
@@ -164,7 +179,7 @@
     <div id="selected-feeds" class="min-w-md">
       <div
         id="selected-feed-template"
-        class="border border-gray-300 rounded-md bg-white p-2 m-2 hidden"
+        class="border border-gray-300 rounded-md bg-white p-2 m-2 hidden selected-feed-item"
       >
         <div class="flex flex-row justify-between">
           <div class="font-bold selected-feed-name">

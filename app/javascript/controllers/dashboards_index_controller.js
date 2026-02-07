@@ -14,9 +14,11 @@ export default class extends Controller {
 
   selectedFeeds = [];
   csrfToken = "";
+  audioHostUrl = "";
 
   connect() {
-    this.csrfToken = document.getElementsByName('csrf-token')[0].content;
+    this.csrfToken = document.getElementsByName('csrf-token')[0]?.content;
+    this.audioHostUrl = this.targets.scope.element.getAttribute("data-audio-host-url");
   }
 
   showListView() {
@@ -183,7 +185,7 @@ export default class extends Controller {
     );
     selectedFeedElement.querySelector(".selected-feed-player").setAttribute(
       "src",
-      `https://broadcastify.cdnstream1.com/${feed.remoteId}`
+      `${this.audioHostUrl}/${feed.remoteId}`
     );
     selectedFeedsElement.appendChild(selectedFeedElement);
   }
