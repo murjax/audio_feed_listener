@@ -118,58 +118,9 @@
         </button>
       </div>
 
-      <div id="preset-template" class="hidden min-w-md mt-2">
-        <div
-          class="border border-gray-300 rounded-md p-2 preset-item"
-        >
-          <div class="flex flex-row justify-between">
-            <div
-              class="font-bold cursor-pointer w-full preset-name"
-              data-action="click->dashboards-index#applyPreset"
-            >
-            </div>
-            <div class="flex flex-row justify-end">
-              <%= render partial: "layouts/plus_svg",
-                locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#applyPreset" }
-              %>
-              <%= render partial: "layouts/x_svg",
-                locals: { classes: "w-[1.5rem] cursor-pointer preset-delete", data_action: "click->dashboards-index#deletePreset" }
-              %>
-            </div>
-          </div>
-          <div class="text-xs preset-feed-count">
-          </div>
-        </div>
-      </div>
-
+      <%= render "preset_item", locals: { id: "preset-template", classes: "hidden" } %>
       <% @presets.each do |preset| %>
-        <div class="min-w-md mt-2">
-          <div
-            class="border border-gray-300 rounded-md p-2 preset-item"
-            data-id="<%= preset.id %>"
-            data-audio-feed-ids="<%= preset.audio_feeds.pluck(:id).join(",") %>"
-          >
-            <div class="flex flex-row justify-between">
-              <div 
-                class="font-bold cursor-pointer w-full preset-name"
-                data-action="click->dashboards-index#applyPreset"
-              >
-                <%= preset.name %>
-              </div>
-              <div class="flex flex-row justify-end">
-                <%= render partial: "layouts/plus_svg",
-                  locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#applyPreset" }
-                %>
-                <%= render partial: "layouts/x_svg",
-                  locals: { classes: "w-[1.5rem] cursor-pointer preset-delete", data_action: "click->dashboards-index#deletePreset" }
-                %>
-              </div>
-            </div>
-            <div class="text-xs preset-feed-count">
-              <%= preset.audio_feeds.length %> feeds
-            </div>
-          </div>
-        </div>
+        <%= render "preset_item", locals: { preset: preset } %>
       <% end %>
     </div>
   </div>

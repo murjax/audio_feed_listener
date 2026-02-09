@@ -1,0 +1,30 @@
+<div 
+  id="<%= local_assigns.dig(:locals, :id) %>"
+  class="min-w-md mt-2 <%= local_assigns.dig(:locals, :classes) %>"
+>
+  <div
+    class="border border-gray-300 rounded-md p-2 preset-item"
+    data-id="<%= local_assigns.dig(:locals, :preset)&.id %>"
+    data-audio-feed-ids="<%= local_assigns.dig(:locals, :preset)&.audio_feeds&.pluck(:id)&.join(",") %>"
+  >
+    <div class="flex flex-row justify-between">
+      <div 
+        class="font-bold cursor-pointer w-full preset-name"
+        data-action="click->dashboards-index#applyPreset"
+      >
+        <%= local_assigns.dig(:locals, :preset)&.name %>
+      </div>
+      <div class="flex flex-row justify-end">
+        <%= render partial: "layouts/plus_svg",
+          locals: { classes: "w-[1.5rem] cursor-pointer", data_action: "click->dashboards-index#applyPreset" }
+        %>
+        <%= render partial: "layouts/x_svg",
+          locals: { classes: "w-[1.5rem] cursor-pointer preset-delete", data_action: "click->dashboards-index#deletePreset" }
+        %>
+      </div>
+    </div>
+    <div class="text-xs preset-feed-count">
+      <%= local_assigns.dig(:locals, :preset)&.audio_feeds&.length %> feeds
+    </div>
+  </div>
+</div>
